@@ -12,6 +12,6 @@ function total(data: Data[]) {
   return t
 }
 
-const content = fs.readFileSync('data.json')
+const content = fs.readFileSync('data/sample.json')
 const data: Data[] = JSON.parse(content.toString())
 console.log(total(data));
