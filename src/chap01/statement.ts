@@ -1,4 +1,4 @@
-function statement(invoice, plays) {
+export function statement(invoice: any, plays: any) {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
@@ -30,12 +30,12 @@ function statement(invoice, plays) {
         throw new Error(`unknown type: ${play.type}`);
     }
 
-    // add volume credits
+    // ボリューム特典のポイントを加算
     volumeCredits += Math.max(perf.audience - 30, 0);
-    // add extra credit for every ten comedy attendees
+    // 喜劇の時は十人につき、さらにポイントを加算
     if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
 
-    // print line for this order
+    // 注文の内訳を出力
     result += `  ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
   }
