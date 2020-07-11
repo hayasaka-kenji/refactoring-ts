@@ -1,4 +1,6 @@
-export function statement(invoice: any, plays: any) {
+import { Invoice, Play, Performance } from './interface'
+
+export function statement(invoice: Invoice, plays: Play): string {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
@@ -22,7 +24,7 @@ export function statement(invoice: any, plays: any) {
   result += `You earned ${volumeCredits} credits\n`;
   return result;
 
-  function amountFor(aPerformance: any) {
+  function amountFor(aPerformance: Performance) {
     let result = 0;
     switch (playFor(aPerformance).type) {
       case "tragedy":
@@ -45,7 +47,7 @@ export function statement(invoice: any, plays: any) {
   }
 
   // playの中のplayIDを返す。
-  function playFor(aPerformance: any) {
+  function playFor(aPerformance: Performance) {
     return plays[aPerformance.playID];
   }
 }
