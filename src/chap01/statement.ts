@@ -9,12 +9,8 @@ export function statement(invoice: Invoice, plays: Play): string {
     totalAmount += amountFor(perf);
   }
   
-  let volumeCredits = 0;
-  for (let perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
-  }
   result += `Amount owed is ${usd(totalAmount)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 
   function amountFor(aPerformance: Performance) {
@@ -51,6 +47,14 @@ export function statement(invoice: Invoice, plays: Play): string {
     // 喜劇の時は十人につき、さらにポイントを加算
     if ("comedy" === playFor(aPerformance).type) result += Math.floor(aPerformance.audience / 5);
     return result;
+  }
+
+  function totalVolumeCredits() {
+    let volumeCredits = 0;
+    for (let perf of invoice.performances) {
+      volumeCredits += volumeCreditsFor(perf);
+    }
+    return volumeCredits;
   }
 
   // 金額のフォーマット
