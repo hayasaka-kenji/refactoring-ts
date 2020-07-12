@@ -1,15 +1,13 @@
 import { Invoice, Play, Performance } from './interface'
 
 export function statement(invoice: Invoice, plays: Play): string {
-  let totalAmount = 0;
   let result = `Statement for ${invoice.customer}\n`;
   for (let perf of invoice.performances) {
     // 注文の内訳を出力
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
-    totalAmount += amountFor(perf);
   }
   
-  result += `Amount owed is ${usd(totalAmount)}\n`;
+  result += `Amount owed is ${usd(totalAmount())}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 
@@ -49,12 +47,20 @@ export function statement(invoice: Invoice, plays: Play): string {
     return result;
   }
 
-  function totalVolumeCredits() {
-    let volumeCredits = 0;
+  function totalAmount() {
+    let result = 0;
     for (let perf of invoice.performances) {
-      volumeCredits += volumeCreditsFor(perf);
+      result += amountFor(perf);
     }
-    return volumeCredits;
+    return result;
+  }
+
+  function totalVolumeCredits() {
+    let result = 0;
+    for (let perf of invoice.performances) {
+      result += volumeCreditsFor(perf);
+    }
+    return result;
   }
 
   // 金額のフォーマット
