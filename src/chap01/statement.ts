@@ -1,19 +1,26 @@
 import { Invoice, Play, Performance } from './interface'
 
 export function statement(invoice: Invoice, plays: Play): string {
-  let result = `Statement for ${invoice.customer}\n`;
-  for (let perf of invoice.performances) {
+  const statementData: any = {};
+  statementData.customer = invoice.customer;
+  statementData.performances = invoice.performances;
+  return renderPlainText(statementData, plays);
+}
+
+function renderPlainText(data: Invoice, plays: Play): string {
+  let result = `Statement for ${data.customer}\n`;
+  for (let perf of data.performances) {
     // 注文の内訳を出力
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
   }
-  
+
   result += `Amount owed is ${usd(totalAmount())}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 
   function totalAmount() {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += amountFor(perf);
     }
     return result;
@@ -21,7 +28,7 @@ export function statement(invoice: Invoice, plays: Play): string {
 
   function totalVolumeCredits() {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += volumeCreditsFor(perf);
     }
     return result;
